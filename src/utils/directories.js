@@ -7,7 +7,10 @@ const walk = require('walk')
 module.exports = {
   createDirectory (currentPath, segments, callback) {
     if (segments.length === 0) {
-      callback(currentPath)
+      if (callback) {
+        callback(currentPath)
+      }
+
       return
     }
 

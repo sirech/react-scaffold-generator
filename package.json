@@ -6,7 +6,7 @@
   "scripts": {
     "start": "./generate",
     "test": "jest",
-    "linter:js": "node_modules/.bin/eslint src --ext js generate*"
+    "linter:js": "node_modules/.bin/eslint src test generate* --ext js"
   },
   "bin": {
     "react-scaffold-generator": "./generate",
@@ -20,7 +20,7 @@
   "author": "Daniel Pouzemski",
   "license": "ISC",
   "dependencies": {
-    "commander": "^2.9.0",
+    "commander": "^2.11.0",
     "inquirer": "^3.0.1",
     "lodash": "^4.17.4",
     "ncp": "^2.0.0",
@@ -42,5 +42,8 @@
   },
   "pre-commit": [
     "linter:js"
-  ]
+  ],
+  "jest": {
+    "testPathIgnorePatterns": ["<rootDir>/scaffold/", "<rootDir>/node_modules/"]
+  }
 }
