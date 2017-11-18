@@ -1,15 +1,15 @@
 #!/usr/bin/env node
 
-const inquirer = require('inquirer');
-const areaTask = require('./src/tasks/area.js');
-const { urlQuestion, fetchQuestion } = require('./src/utils/area/questions.js');
+const inquirer = require('inquirer')
+const areaTask = require('./src/tasks/area.js')
+const { urlQuestion, fetchQuestion } = require('./src/utils/area/questions.js')
 
 inquirer.prompt([urlQuestion, fetchQuestion]).then(answers => {
-  const { areaURL, mainComponentType } = answers;
+  const { areaURL, mainComponentType } = answers
 
   return areaTask(areaURL, mainComponentType).then(areaPath => {
-    console.log(`A new area has been generated in ${areaPath}`);
-  });
+    console.log(`A new area has been generated in ${areaPath}`)
+  })
 }).catch(err => {
-  console.error('[ERROR] ', err);
-});
+  console.error('[ERROR] ', err)
+})

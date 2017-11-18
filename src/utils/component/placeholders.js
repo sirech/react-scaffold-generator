@@ -1,10 +1,10 @@
-const _ = require('lodash');
+const _ = require('lodash')
 
 module.exports = {
-  generatePlaceholders(componentName) {
+  generatePlaceholders (componentName) {
     return {
       name: componentName,
       rootClass: _.kebabCase(componentName)
-    };
+    }
   }
-};
+}

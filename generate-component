@@ -1,68 +1,66 @@
 #!/usr/bin/env node
 
-const inquirer = require('inquirer');
-const program = require('commander');
-const directories = require('./src/utils/directories.js');
-const path = require('path');
-const componentTask = require('./src/tasks/component.js');
-const { urlQuestion, typeQuestion, functionalQuestion, nameQuestion  } = require('./src/utils/component/questions.js');
-
-const root = process.env.root || 'app';
+const inquirer = require('inquirer')
+const program = require('commander')
+const directories = require('./src/utils/directories.js')
+const path = require('path')
+const componentTask = require('./src/tasks/component.js')
+const { urlQuestion, typeQuestion, functionalQuestion, nameQuestion } = require('./src/utils/component/questions.js')
 
 program
   .option('-e, --here', 'skip the url inquiry step and create a component in the components folder below the current folder')
-  .parse(process.argv);
+  .parse(process.argv)
 
 const lastQuestion = (componentsPath, componentType) => {
   return inquirer.prompt([nameQuestion]).then(({ componentName }) => {
     return componentTask(componentsPath, componentName, componentType).then((componentsPath) => {
-      console.log(`${componentName} in ${componentsPath} has been generated`);
-    });
-  });
-};
+      console.log(`${componentName} in ${componentsPath} has been generated`)
+    })
+  })
+}
 
 const getInitialQuestions = () => {
   if (program.here) {
-    return [typeQuestion];
+    return [typeQuestion]
   } else {
-    return [urlQuestion, typeQuestion];
+    return [urlQuestion, typeQuestion]
   }
 }
 
 const determinePath = () => {
-  const currentFolder = directories.resolveWorkingDir();
-  const currentFolderName = path.basename(currentFolder);
-  const componentsInsideCurrentFolder = path.resolve(currentFolder, 'components');
+  const currentFolder = directories.resolveWorkingDir()
+  const currentFolderName = path.basename(currentFolder)
+  const componentsInsideCurrentFolder = path.resolve(currentFolder, 'components')
 
   if (currentFolderName === 'components') {
-    return currentFolder;
+    return currentFolder
   } else if (directories.doesDirectoryExist(componentsInsideCurrentFolder)) {
-    return componentsInsideCurrentFolder;
+    return componentsInsideCurrentFolder
   } else {
-    throw Error('Could not determine path');
+    throw Error('Could not determine path')
   }
-};
+}
 
 const getComponentPath = answers => {
   if (program.here) {
-    return determinePath();
+    return determinePath()
   } else {
-    return path.resolve(directories.convertURLtoPath(answers.areaURL), 'components');
+    return path.resolve(directories.convertURLtoPath(answers.areaURL), 'components')
   }
-};
+}
 
 inquirer.prompt(getInitialQuestions()).then(answers => {
-  const { componentType } = answers;
-  const componentsPath = getComponentPath(answers);
+  const { componentType } = answers
+  const componentsPath = getComponentPath(answers)
 
   if (componentType === 'presentational') {
     return inquirer.prompt([functionalQuestion]).then(({ isStateful }) => {
-      const componentType = isStateful ? 'component' : 'component_pure';
-      return lastQuestion(componentsPath, componentType);
-    });
+      const componentType = isStateful ? 'component' : 'component_pure'
+      return lastQuestion(componentsPath, componentType)
+    })
   } else {
-    return lastQuestion(componentsPath, 'component_container');
+    return lastQuestion(componentsPath, 'component_container')
   }
 }).catch(err => {
-  console.error('[ERROR] ', err);
-});
+  console.error('[ERROR] ', err)
+})

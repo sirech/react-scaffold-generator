@@ -1,4 +1,4 @@
-const _ = require('lodash');
+const _ = require('lodash')
 
 module.exports = {
   urlQuestion: {
@@ -7,21 +7,21 @@ module.exports = {
     message: 'Enter the URL of the area where the component will be placed',
     filter: val => {
       if (val[0] === '/') {
-        val = val.substr(1);
+        val = val.substr(1)
       }
 
-      if (val[val.length-1] === '/') {
-        val = val.substr(0, val.length-1);
+      if (val[val.length - 1] === '/') {
+        val = val.substr(0, val.length - 1)
       }
 
-      return val;
+      return val
     },
     validate: val => {
       if (_.isEmpty(val)) {
-        return 'This does not look like a valid URL';
+        return 'This does not look like a valid URL'
       }
 
-      return true;
+      return true
     }
   },
   typeQuestion: {
@@ -51,17 +51,17 @@ module.exports = {
     message: 'Enter the name of your component',
     filter: val => {
       if (!/\w+Component/.test(val)) {
-        val = `${val}Component`;
+        val = `${val}Component`
       }
 
-      return _.upperFirst(val);
+      return _.upperFirst(val)
     },
     validate: val => {
       if (_.isEmpty(val)) {
-        return 'This does not look like a valid component name';
+        return 'This does not look like a valid component name'
       }
 
-      return true;
+      return true
     }
   }
-};
+}
