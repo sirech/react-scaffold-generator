@@ -50,11 +50,7 @@ module.exports = {
     name: 'componentName',
     message: 'Enter the name of your component',
     filter: val => {
-      if (!/\w+Component/.test(val)) {
-        val = `${val}Component`
-      }
-
-      return _.upperFirst(val)
+      return _.snakeCase(val)
     },
     validate: val => {
       if (_.isEmpty(val)) {

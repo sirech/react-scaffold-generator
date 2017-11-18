@@ -1,21 +1,17 @@
-import React from 'react';
+// @flow
 
-import './__NAME__.scss';
+import React from 'react'
 
-const __NAME__ = ({ sampleProp, children }) => {
-  return (
-    <div className="__ROOT_CLASS__">
-      {children}
-    </div>
-  );
-};
+import './styles.css'
 
-__NAME__.propTypes = {
+type Props = {
+  children?: React.Children
+}
 
-};
+const __NAME__ = ({ children }: Props) => (
+  <div className='__ROOT_CLASS__'>
+    {children}
+  </div>
+)
 
-__NAME__.defaultProps = {
-
-};
-
-export default __NAME__;
+export default __NAME__

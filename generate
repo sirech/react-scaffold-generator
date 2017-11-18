@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 
 const program = require('commander')
+const config = require('./package.json')
 
 program
-  .version('0.1.0')
+  .version(config.version)
   .command('area', 'generates an area folder with an entry-level React component')
   .command('component', 'generates a React component')
   .parse(process.argv)

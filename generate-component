@@ -5,10 +5,13 @@ const program = require('commander')
 const directories = require('./src/utils/directories.js')
 const path = require('path')
 const componentTask = require('./src/tasks/component.js')
-const { urlQuestion, typeQuestion, functionalQuestion, nameQuestion } = require('./src/utils/component/questions.js')
+const _ = require('lodash')
+const { typeQuestion, functionalQuestion, nameQuestion } = require('./src/utils/component/questions.js')
+const config = require('./package.json')
 
 program
-  .option('-e, --here', 'skip the url inquiry step and create a component in the components folder below the current folder')
+  .version(config.version)
+  .option('-t, --type <type>', 'type of building block', /^(organism|molecule|atom)s$/i, 'molecules')
   .parse(process.argv)
 
 const lastQuestion = (componentsPath, componentType) => {
@@ -20,38 +23,26 @@ const lastQuestion = (componentsPath, componentType) => {
 }
 
 const getInitialQuestions = () => {
-  if (program.here) {
-    return [typeQuestion]
-  } else {
-    return [urlQuestion, typeQuestion]
-  }
+  return [typeQuestion]
 }
 
 const determinePath = () => {
   const currentFolder = directories.resolveWorkingDir()
-  const currentFolderName = path.basename(currentFolder)
-  const componentsInsideCurrentFolder = path.resolve(currentFolder, 'components')
+  const candidates = _.map(['', 'src'], (f) => path.resolve(currentFolder, f, program.type))
+  const subFolder = _.find(candidates, directories.doesDirectoryExist)
 
-  if (currentFolderName === 'components') {
+  if (path.basename(currentFolder) === program.type) {
     return currentFolder
-  } else if (directories.doesDirectoryExist(componentsInsideCurrentFolder)) {
-    return componentsInsideCurrentFolder
+  } else if (subFolder) {
+    return subFolder
   } else {
     throw Error('Could not determine path')
   }
 }
 
-const getComponentPath = answers => {
-  if (program.here) {
-    return determinePath()
-  } else {
-    return path.resolve(directories.convertURLtoPath(answers.areaURL), 'components')
-  }
-}
-
 inquirer.prompt(getInitialQuestions()).then(answers => {
   const { componentType } = answers
-  const componentsPath = getComponentPath(answers)
+  const componentsPath = determinePath(answers)
 
   if (componentType === 'presentational') {
     return inquirer.prompt([functionalQuestion]).then(({ isStateful }) => {

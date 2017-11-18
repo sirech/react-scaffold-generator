@@ -3,7 +3,7 @@ const _ = require('lodash')
 module.exports = {
   generatePlaceholders (componentName) {
     return {
-      name: componentName,
+      name: _.replace(_.startCase(componentName), ' ', ''),
       rootClass: _.kebabCase(componentName)
     }
   }
