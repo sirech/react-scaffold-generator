@@ -27,6 +27,7 @@
     "walk": "^2.3.9"
   },
   "devDependencies": {
+    "coveralls": "^3.0.0",
     "eslint": "^4.11.0",
     "eslint-config-standard": "^10.2.1",
     "eslint-plugin-import": "^2.8.0",
@@ -44,6 +45,9 @@
     "linter:js"
   ],
   "jest": {
-    "testPathIgnorePatterns": ["<rootDir>/scaffold/", "<rootDir>/node_modules/"]
+    "testPathIgnorePatterns": [
+      "<rootDir>/scaffold/",
+      "<rootDir>/node_modules/"
+    ]
   }
 }
